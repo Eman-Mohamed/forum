@@ -21,7 +21,7 @@ class ForumsController extends Zend_Controller_Action
            if($form->isValid($this->_request->getParams())){
                $forum_info = $form->getValues();
                $forum_model = new Application_Model_Forums();
-               $forum_model->addForum($forum_info);
+              $forum_model->addForum($forum_info);
                        
            }
        }

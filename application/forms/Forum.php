@@ -14,30 +14,33 @@ class Application_Form_Forum extends Zend_Form
         $title->setAttrib("class", "form-control");
         $title->setLabel("Title  ");
         $title->setRequired();
-       $title->addValidator(new Zend_Validate_Alnum());
+        $title->addValidator(new Zend_Validate_Alnum());
         $title->addFilter(new Zend_Filter_StripTags);
         
        
          $image = new Zend_Form_Element_File("image");
          $image->setLabel("Choose Image");
          
-         $lock=new Zend_Form_Element_Radio("lock");
+         $lock=new Zend_Form_Element_Radio("is_locked");
          $lock->setLabel("Forum Status ");
+         $lock->setAttrib("name", "is_locked");
          $lock->setRequired();
-        // $lock->setAttrib("class","radio-inline");
-         $lock->setMultiOptions(array('lock' => 'Lock',
-        'notlocked' => 'Not Lock'));
+         $lock->setMultiOptions(array('0' => 'Lock',
+        '1' => 'Not Lock'));
          
-         $cat=new Zend_Form_Element_Select("Category");
+         $cats=new Application_Model_Categories();
+         $allCat=$cats->listCategory();
+         $names[""]="Select Category";
+         foreach ($allCat as $key => $value) 
+         {
+             $names[$value['id']] =  $value["name"];
+         }
+               
+         $cat=new Zend_Form_Element_Select("cat_id");
+         $cat->setAttrib("name", "cat_id");
          $cat->setLabel('Choose Category ');
          $cat->setAttrib("class", "form-control");
-         $cat->setMultiOptions(array(
-             '' => 'Categories',
-             '0' => 'French',
-             '1' => 'English',
-             '2' => 'Japanese',
-             '3' => 'Chinese',
-     ));
+         $cat->setMultiOptions($names);
                          
         $id = new Zend_Form_Element_Hidden("id");
         
