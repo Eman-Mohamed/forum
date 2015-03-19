@@ -6,10 +6,10 @@ class Application_Model_Forums extends Zend_Db_Table_Abstract
     
     function addForum($data){
         $row = $this->createRow();
-        $row->name = $data['title'];
+        $row->name = $data['name'];
         $row->image = $data['image'];
-        $row->is_locked = $data['lock'];
-        $row->cat_id = $data['cat'];
+        $row->is_locked = $data['is_locked'];
+        $row->cat_id = $data['cat_id'];
                
         return $row->save();
     }
