@@ -20,9 +20,19 @@ class ForumsController extends Zend_Controller_Action
        if($this->_request->isPost()){
            if($form->isValid($this->_request->getParams())){
                $forum_info = $form->getValues();
+             
+               $name=$forum_info["name"];
+               $catgId=$forum_info["cat_id"];
                $forum_model = new Application_Model_Forums();
-              $forum_model->addForum($forum_info);
-                       
+               $result=$forum_model->checkForums(array($catgId,$name));
+               if($result)
+               {
+                   echo "There is a forum with that name in this category";
+               }
+               else
+               {
+                    $forum_model->addForum($forum_info);
+               }       
            }
        }
        

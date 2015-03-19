@@ -29,6 +29,15 @@ class Application_Model_Forums extends Zend_Db_Table_Abstract
         return $this->fetchAll($forums)->toArray();
     }
     
+     function checkForums($array)
+    {
+        $forums = $this->select()
+        ->from('forums')
+             ->where("cat_id = $array[0]")
+             ->where("name= '$array[1]'");
+        return $this->fetchAll($forums)->toArray();
+    }
+    
     function lockForum($data){
         $this->update($data['is_locked'], "id=".$data['id']);
         return $this->fetchAll()->toArray();       

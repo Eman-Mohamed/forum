@@ -14,11 +14,13 @@ class Application_Form_Forum extends Zend_Form
         $title->setAttrib("class", "form-control");
         $title->setLabel("Title  ");
         $title->setRequired();
-        $title->addValidator(new Zend_Validate_Alnum());
-        $title->addFilter(new Zend_Filter_StripTags);
+        $title->addValidator(new Zend_Validate_Alnum(TRUE));
+        $title->addFilter(new Zend_Filter_StripTags);     
         
        
          $image = new Zend_Form_Element_File("image");
+         $image->addValidator(new Zend_Validate_File_Size(2048*1024));
+         $image->addValidator(new Zend_Validate_File_IsImage());
          $image->setLabel("Choose Image");
          
          $lock=new Zend_Form_Element_Radio("is_locked");
