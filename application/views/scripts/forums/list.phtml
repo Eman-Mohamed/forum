@@ -1,0 +1,21 @@
+<br /><br />
+<div id="view-content">
+	<p>View script for controller <b>forums</b> and script/action name <b>list</b></p>
+</div>
+
+<table >
+       <?php
+for($i = 0; $i<count($this->formus); $i++){
+     
+?>
+    <tr>
+    <td>
+<a href="<?php echo $this->baseUrl()?>/forums/id/<?php echo $this->forums[$i]['id'];?>" > <?php echo $this->posts[0]["name"];?></a>
+    </td>
+    </tr>
+<br />
+<?php
+
+}
+?>
+</table>
