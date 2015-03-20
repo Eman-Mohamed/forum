@@ -1,19 +1,45 @@
-<br /><br />
+<head>
+	
+	<style >
+
+/*   table td
+   {
+
+   	border-color: red;
+   	border-style: double;
+   	
+   }*/
+
+	</style>
+</head>
+
 <div id="view-content">
 	<p>View script for controller <b>forums</b> and script/action name <b>list</b></p>
 </div>
 
-<table >
+<table class="table table-hover" >
        <?php
-for($i = 0; $i<count($this->formus); $i++){
+       
+for($i = 0; $i<count($this->forums); $i++){
      
 ?>
     <tr>
-    <td>
-<a href="<?php echo $this->baseUrl()?>/forums/id/<?php echo $this->forums[$i]['id'];?>" > <?php echo $this->posts[0]["name"];?></a>
+        <td class="success" >
+            <img src="../forum_images/<?php echo $this->forums[$i]['image'];?>" width="100" height="100"/>
+            
+        </td>
+    <td class="danger">
+<a href="<?php echo $this->baseUrl()?>/forums/id/<?php echo $this->forums[$i]['id'];?>" > <?php echo $this->forums[$i]["name"];?></a>
     </td>
+        <td class="warning">    
+<a href="<?php echo $this->baseUrl()?>/forums/delete/id/<?php echo $this->forums[$i]['id'];?>/img/<?php echo $this->forums[$i]['image']?>" > Delete </a>
+
+</td>
+ <td class="info">    
+<a href="<?php echo $this->baseUrl()?>/forums/edit/id/<?php echo $this->forums[$i]['id'];?>" > Edit </a>
+
+</td>
     </tr>
-<br />
 <?php
 
 }

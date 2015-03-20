@@ -7,7 +7,7 @@ class Application_Form_Forum extends Zend_Form
     {
         /* Form Elements & Other Definitions Here ... */
         $this->setMethod("post");
-        $this->setAttrib("class","form-horizontal");
+        $this->setAttrib("class","form-inline");
         
         $title = new Zend_Form_Element_Text("name");
         
@@ -21,8 +21,10 @@ class Application_Form_Forum extends Zend_Form
          $image = new Zend_Form_Element_File("image");
          $image->addValidator(new Zend_Validate_File_Size(2048*1024));
          $image->addValidator(new Zend_Validate_File_IsImage());
+         $image->setValueDisabled(true);
+         $image->addValidator('Count', false, 1);
          $image->setLabel("Choose Image");
-         
+       
          $lock=new Zend_Form_Element_Radio("is_locked");
          $lock->setLabel("Forum Status ");
          $lock->setAttrib("name", "is_locked");

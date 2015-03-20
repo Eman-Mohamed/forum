@@ -27,11 +27,34 @@ class ForumsController extends Zend_Controller_Action
                $result=$forum_model->checkForums(array($catgId,$name));
                if($result)
                {
-                   echo "There is a forum with that name in this category";
+                   echo "There is a forum with the same name in this category";
                }
                else
                {
+                  
+                    $ext = pathinfo($forum_info["image"], PATHINFO_EXTENSION);
+                    $upload = new Zend_File_Transfer_Adapter_Http();  
+                    $upload->setDestination("/var/www/html/zend_project/public/forum_images");
+                    $upload->addFilter(new Zend_Filter_File_Rename(array('target' => 'forum'.$forum_info["id"].'.'.$ext)));                  
+                    $upload->receive();
+                    $forum_info["image"]='forum'.$forum_info["id"].'.'.$ext;
                     $forum_model->addForum($forum_info);
+//                     if ($form->getElement('image')->isUploaded()) 
+//                        {
+//                        $extension = pathinfo($form->getElement('image'), PATHINFO_EXTENSION); 
+//
+//                        $form->getElement('image')->addFilter('Rename', array(
+//                            'target' =>  'forum.'. $forum_info["id"]. $extension,
+//                            'overwrite' => true
+//                    ));}
+//                    try 
+//                    {   
+//                        $upload->receive();
+//                            
+//                        Zend_Debug::dump($upload->getFileInfo());
+//                    } catch (Zend_File_Transfer_Exception $e) {
+//                            echo $e->message();
+//                            }
                }       
            }
        }
@@ -43,10 +66,13 @@ class ForumsController extends Zend_Controller_Action
     {
         $id = $this->_request->getParam("id");
         if(!empty($id)){
+            $img = $this->_request->getParam("img");
+            unlink("/var/www/html/zend_project/public/forum_images/$img");
             $forum_model = new Application_Model_Forums();
             $forum_model->deleteForum($id);
         }
-           $this->redirect("forum/list");
+       
+          $this->redirect("forums/list");
       
     }
 
