@@ -1,0 +1,17 @@
+<br /><br />
+<div id="view-content">
+	<p>View script for controller <b>Users</b> and script/action name <b>add</b></p>
+</div>
+<?php
+for($i = 0; $i<count($this->users); $i++){
+foreach ($this->users[$i] as $key=>$value):
+    echo $key." ".$value ."<br />";
+endforeach;
+?>
+<a href="<?php echo $this->baseUrl()?>/user/edit/id/<?php echo $this->users[$i]['id'];?>" > Edit </a>
+<a href="<?php echo $this->baseUrl()?>/user/delete/id/<?php echo $this->users[$i]['id'];?>" > Delete </a>
+<br />
+<?php
+echo str_repeat("*", 80)."<br />";
+}
+?>

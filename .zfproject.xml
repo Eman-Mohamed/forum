@@ -82,6 +82,12 @@
           <viewControllerScriptsDirectory forControllerName="forums">
             <viewScriptFile forActionName="list"/>
           </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="users">
+            <viewScriptFile forActionName="confirm-email"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="users">
+            <viewScriptFile forActionName="confirm-email"/>
+          </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>
         <viewFiltersDirectory enabled="false"/>
