@@ -34,24 +34,57 @@ class UsersController extends Zend_Controller_Action {
     }
 
     public function editAction() {
-        $id = $this->_request->getParam("id");
-        $form = new Application_Form_Users();
+        $form = new Application_Form_Registration();
+        $id = $this->_request->getParam("id"); 
+        $form->getElement("password")->setRequired(false);
+        $form->removeElement("gender");
+        $form->removeElement("email");
+
         if ($this->_request->isPost()) {
+            
             if ($form->isValid($this->_request->getParams())) {
                 $user_info = $form->getValues();
                 $user_model = new Application_Model_Users();
+                
+                if($user_info["image"] !="")
+               {
+                    $user_model = new Application_Model_Users();
+                    $users = $user_model->getUserById($id);
+                  
+                    $imgName= $users[0]['image'];
+                    unlink("/var/www/html/zend_project/public/profile_images/$imgName");
+                    $ext = pathinfo($forum_info["image"], PATHINFO_EXTENSION);
+                    $upload = new Zend_File_Transfer_Adapter_Http();  
+                    $upload->setDestination("/var/www/html/zend_project/public/profile_images");
+                    $upload->addFilter(new Zend_Filter_File_Rename(array('target' => $user_info["name"].$users[0]["id"].'.'.$ext)));                  
+                    $upload->receive();
+                    $user_info["image"]=$user_info["name"].$user[0]["id"].'.'.$ext;
+               }
+               
+               if($user_info["signature"] !="")
+               {
+                    $user_model = new Application_Model_Users();
+                    $users = $user_model->getUserById($id);
+                  
+                    $signatureName= $users[0][' signature'];
+                    unlink("/var/www/html/zend_project/public/profile_images/$signatureName");
+                    $ext = pathinfo($forum_info["image"], PATHINFO_EXTENSION);
+                    $upload = new Zend_File_Transfer_Adapter_Http();  
+                    $upload->setDestination("/var/www/html/zend_project/public/signature_images");
+                    $upload->addFilter(new Zend_Filter_File_Rename(array('target' => $user_info["name"].$users[0]["id"].'.'.$ext)));                  
+                    $upload->receive();
+                    $user_info["signature"]=$user_info["name"].$user[0]["id"].'.'.$ext;
+               }
                 $user_model->editUser($user_info);
             }
             if (!empty($id)) {
                 $user_model = new Application_Model_Users();
                 $user = $user_model->getUserById($id);
-                var_dump($user);
 
                 $form->populate($user[0]);
             } else
                 $this->redirect("users/list");
         }
-        $form->getElement("password")->setRequired(false);
         $this->view->form = $form;
         $this->render('add');
     }
@@ -72,17 +105,16 @@ class UsersController extends Zend_Controller_Action {
 
     public function loginAction() {
 
-        $login_form = new Application_Form_Users();
-        $login_form->removeElement("name");
-        $login_form->removeElement("id");
+        $login_form = new Application_Form_Login();
+        
         $this->view->login = $login_form;
 
-        $login_model = new Application_Model_Login();
+        $login_model = new Application_Model_Users();
         if ($login_form->isValid($_POST)) {
             $email = $this->_request->getParam('email');
             $password = $this->_request->getParam('password');
             $db = Zend_Db_Table::getDefaultAdapter();
-            $authAdapter = new Zend_Auth_Adapter_DbTable($db, 'student', 'email', 'password');
+            $authAdapter = new Zend_Auth_Adapter_DbTable($db, 'users', 'email', 'password');
 
             $authAdapter->setIdentity($email);
             $authAdapter->setCredential(md5($password));
@@ -105,14 +137,27 @@ class UsersController extends Zend_Controller_Action {
         }
         $this->view->name = $data['name'];
     }
+    
+    
+     public function banAction()
+    {
+        $form = new Application_Form_Users();
+        $users_model = new Application_Model_Users();
+        $id = $this->_request->getParam("id");
+        $ban = $this->_request->getParam("lock");
+        $this->view->users = $users_model->banuser($id,$ban);
+        $this->redirect("users/list");
+    }
 
     public function registerAction() {
         $register_model = new Application_Model_Users();
         $form = new Application_Form_Registration();
         $this->view->register = $form;
+        
         if ($this->getRequest()->isPost()) {
             if ($form->isValid($_POST)) {
                 $data = $form->getValues();
+                echo "hello";
                 $data = $this->preparedata($data);
 
                 if ($register_model->checkUnique($data['email'])) {
@@ -121,7 +166,7 @@ class UsersController extends Zend_Controller_Action {
                 }
 
                 $register_model->insert($data);
-//                $this->_redirect('users/home');
+                $this->_redirect('users/login');
                 $this->sendConfirmationEmail($data);
             }
         }
@@ -201,3 +246,8 @@ class UsersController extends Zend_Controller_Action {
     }
 
 }
+
+
+?>
+
+

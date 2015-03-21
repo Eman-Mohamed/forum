@@ -13,44 +13,62 @@ class Application_Form_Registration extends Zend_Form
                     ->setRequired(true)
                     ->addFilter('StripTags')
                     ->addFilter('StripTags');
+        $name->setAttrib("class", "form-control");
+       $name->setAttrib("placeholder", "Name");
+        
         $email = $this->createElement('text','email');
         $email->setLabel('Email: *')
                 ->setRequired(true);
+        $email->setAttrib("class", "form-control");
+       $email->setAttrib("placeholder", "Email");
                 
         
                 
         $password = $this->createElement('password','password');
         $password->setLabel('Password: *')
                 ->setRequired(true);
+        $password->setAttrib("class", "form-control");
+        $password->setAttrib("placeholder", "Password");
         
-        $gender = $this->CreateElement('radio','gender')
-        ->addFilter(new Zend_Filter_StringTrim())
+        $gender =new Zend_Form_Element_Radio("gender");
+        $gender->addFilter(new Zend_Filter_StringTrim())
         ->setMultiOptions(array('M'=>'Male', 'F'=>'Female'))
+        ->setAttrib("name", "gender")
+        ->setRequired()
         ->setDecorators(array( array('ViewHelper') ));
+       
+       
         
-        $uploadImage = new Zend_File_Transfer_Adapter_Http();
-        $uploadImage = new Zend_Form_Element_File('image');
-        $uploadImage->setLabel("Upload Image ")
-            ->setRequired(true)               
+        $image = new Zend_File_Transfer_Adapter_Http();
+        $image = new Zend_Form_Element_File('image');
+        $image->setLabel("Upload Image ")
+            ->setRequired()               
             ->addValidator('Extension',false,'jpg,png,gif,jpeg')
             ->setDestination("../public/profile_images")
             ->addValidator('Count',false,1) //ensure only 1 file
-            ->addValidator('Size',false,102400) //limit to 100K
+            ->addValidator('Size',false,102400*100) //limit to 100K
             ->getValidator('Extension')->setMessage('This file type is not supportted.');
+        
 
         
         
-        $uploadSignature = new Zend_Form_Element_File('signature');
-        $uploadSignature->setLabel("Upload signature ")
-            ->setRequired(true)               
-            ->addValidator('Extension', false, 'jpeg,png')
+        $signature = new Zend_Form_Element_File('signature');
+        $signature->setLabel("Upload signature ")
+            ->setRequired()               
+            ->addValidator('Extension', false, 'jpeg,png,gif,jpg')
+            ->setDestination("../public/signture_images")
+            ->addValidator('Count',false,1) //ensure only 1 file
+            ->addValidator('Size',false,102400) //limit to 100K   
+                
             ->getValidator('Extension')->setMessage('This file type is not supportted.');
+         
 
         
                 
         $register = $this->createElement('submit','register');
-        $register->setLabel('Sign up')
-                ->setIgnore(true);
+        $register->setLabel('Sign up');
+        $register->setAttrib("class", "btn btn-primary")
+                                ->setIgnore(true);
                 
                 
         $this->addElements(array(
@@ -58,13 +76,14 @@ class Application_Form_Registration extends Zend_Form
                         $email,
                         $password,
                         $gender,
-                        $uploadImage,
-                        $uploadSignature,
+                        $image,
+                        $signature,
                         $register
         ));
       
     }
 }
+
 
 
 

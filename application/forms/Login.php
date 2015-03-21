@@ -6,20 +6,37 @@ class Application_Form_Login extends Zend_Form
     public function init()
     {
           $this->setMethod('post');
+          
+       
+        $email = $this->createElement('text','email');
+        $email->setLabel('Email: *')
+                ->setRequired(true);
 
-        $this->addElement(
-            'text', 'email', array(
-            'label' => 'Email:',
-            'required' => true,
-            'filters'    => array('StringTrim'),
-        ));
-       $this->setAttrib("class", "form-control");
-       $this->setAttrib("placeholder", "Email");
+       $email->setAttrib("class", "form-control");
+       $email->setAttrib("placeholder", "Email");
+       
+         $password = $this->createElement('password','password');
+        $password->setLabel('Password: *')
+                ->setRequired(true);
+       $password->setAttrib("class", "form-control");
+        $email->setAttrib("placeholder", "Password");
 
-        $this->addElement('password', 'password', array(
-            'label' => 'Password:',
-            'required' => true,
+        
+        $submit = new Zend_Form_Element_Submit("submit");
+        $submit->setAttrib("class", "btn btn-primary");
+        
+        
+          $this->addElements(array(
+                 
+                        $email,
+                        $password,
+                        $submit,
+                        
         ));
+
+       
+        
+        
     }
 
 

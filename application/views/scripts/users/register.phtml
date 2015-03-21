@@ -8,7 +8,8 @@
         <li><a href="#">login in</a></li>
 </nav>
     <div class="jumbotron col-sm-1-offset-1">
-    <p>View script for controller <b>users</b> and script/action name <b>register</b></p>
+            <form class="form-horizontal">
+
     <?php
     if (isset($this->errorMessage)) {
 
@@ -23,8 +24,8 @@
     
 
 
-    <a href=”<?= $this->url(array('controller' => 'users', 'action' => 'register')) ?>”>New users click here?</a>
 
 </div>
 
 </div>
+</form>

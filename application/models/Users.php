@@ -27,6 +27,12 @@ class Application_Model_Users extends Zend_Db_Table_Abstract
     }
             
     function editUser($data){
+        if (empty($data['image'])) {
+           unset($data['image']);
+        }
+        if (empty($data['signture'])) {
+           unset($data['signture']);
+        }
         $this->update($data, "id=".$data['id']);
         return $this->fetchAll()->toArray();
     }
@@ -50,6 +56,25 @@ class Application_Model_Users extends Zend_Db_Table_Abstract
 
 }
 
+    function banuser($id,$ban){
+        echo "gfdgd".$ban;
+        if($ban==0)
+        {
+            $banned = array(
+           'is_banned'      => '1');  
+        }
+        
+        if($ban==1)
+        {
+            $banned = array(
+           'is_banned'      => '0');  
+        }
+        return $this->update($banned, "id=".$id);
+      
+    }
+
 
 }
 
+
+?>

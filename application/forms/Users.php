@@ -10,19 +10,20 @@ class Application_Form_Users extends Zend_Form
         $username->setAttrib("class", "form-control");
         $username->setLabel("Username: ");
         $username->setRequired();
-        //$username->addValidator(new Zend_Validate_EmailAddress());
-        $username->addFilter(new Zend_Filter_StripTags);
-        //$username->addDecorator($decorator)
+//        $username->addFilter(new Zend_Filter_StripTags);
+        $username->setAttrib("class", "form-control");
+
+       
         
         $email = new Zend_Form_Element_Text("email");
          $email->setRequired()
                 ->setLabel("Email:")
-                 ->addValidator(new Zend_Validate_EmailAddress());
-//                 ->addValidator(new Zend_Validate_Db_NoRecordExists(array(
-//        'table' => 'student',
-//        'field' => 'email'
-//    )
-//));
+                 ->addValidator(new Zend_Validate_EmailAddress())
+                 ->addValidator(new Zend_Validate_Db_NoRecordExists(array(
+        'table' => 'users',
+        'field' => 'email'
+    )
+));
          
          $password = new Zend_Form_Element_Password("password");
          $password->setRequired()

@@ -30,7 +30,7 @@ class Application_Model_Threads extends Zend_Db_Table_Abstract
     
     function getThreadsByForumId($forum_id) {
         
-        $threads = $this->select()->where("forum_id = $forum_id");
+        $threads = $this->select()->where("forum_id = $forum_id")->order("date DESC");
         return $this->fetchAll($threads)->toArray();
     }
 

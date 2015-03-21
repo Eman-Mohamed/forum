@@ -82,11 +82,16 @@
           <viewControllerScriptsDirectory forControllerName="forums">
             <viewScriptFile forActionName="list"/>
           </viewControllerScriptsDirectory>
+<<<<<<< HEAD
           <viewControllerScriptsDirectory forControllerName="users">
             <viewScriptFile forActionName="confirm-email"/>
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="users">
             <viewScriptFile forActionName="confirm-email"/>
+=======
+          <viewControllerScriptsDirectory forControllerName="threads">
+            <viewScriptFile forActionName="list"/>
+>>>>>>> 431654c89c36fae5511e2055bfb6129473f6d50a
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>
