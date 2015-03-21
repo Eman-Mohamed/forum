@@ -38,16 +38,25 @@ class Application_Model_Forums extends Zend_Db_Table_Abstract
         return $this->fetchAll($forums)->toArray();
     }
     
-    function lockForum($data){
-        $this->update($data['is_locked'], "id=".$data['id']);
-        return $this->fetchAll()->toArray();       
+    function lockForum($id,$lock){
+        echo "gfdgd".$lock;
+        if($lock==0)
+        {
+            $locked = array(
+           'is_locked'      => '1');  
+        }
+        
+        if($lock==1)
+        {
+            $locked = array(
+           'is_locked'      => '0');  
+        }
+        return $this->update($locked, "id=".$id);
+      
     }
             
     function editForum($data){
-         if (empty($data['name'])) {
-           unset($data['name']);
-        }
-        
+       
         if (empty($data['image'])) {
            unset($data['image']);
         }
@@ -55,6 +64,8 @@ class Application_Model_Forums extends Zend_Db_Table_Abstract
         if (empty($data['is_locked'])) {
            unset($data['is_locked']);
         }
+        
+        unset($data['cat_id']);
 
         $this->update($data, "id=".$data['id']);
         return $this->fetchAll()->toArray();

@@ -35,18 +35,11 @@ class ForumsController extends Zend_Controller_Action
                     $ext = pathinfo($forum_info["image"], PATHINFO_EXTENSION);
                     $upload = new Zend_File_Transfer_Adapter_Http();  
                     $upload->setDestination("/var/www/html/zend_project/public/forum_images");
-                    $upload->addFilter(new Zend_Filter_File_Rename(array('target' => 'forum'.$forum_info["id"].'.'.$ext)));                  
+                    $upload->addFilter(new Zend_Filter_File_Rename(array('target' => $forum_info["name"].$forum_info["cat_id"].'.'.$ext)));                  
                     $upload->receive();
-                    $forum_info["image"]='forum'.$forum_info["id"].'.'.$ext;
+                    $forum_info["image"]=$forum_info["name"].$forum_info["cat_id"].'.'.$ext;
                     $forum_model->addForum($forum_info);
-//                     if ($form->getElement('image')->isUploaded()) 
-//                        {
-//                        $extension = pathinfo($form->getElement('image'), PATHINFO_EXTENSION); 
-//
-//                        $form->getElement('image')->addFilter('Rename', array(
-//                            'target' =>  'forum.'. $forum_info["id"]. $extension,
-//                            'overwrite' => true
-//                    ));}
+                    
 //                    try 
 //                    {   
 //                        $upload->receive();
@@ -79,39 +72,64 @@ class ForumsController extends Zend_Controller_Action
     public function editAction()
     {
         $id = $this->_request->getParam("id");
-        $form  = new Application_Form_Forum();
+        $form  = new Application_Form_Forum(); 
+        $form->getElement("image")->setRequired(false);
+        $form->removeElement("cat_id");
+        $form->removeElement("is_locked");
+        $this->view->form = $form;
+
         if($this->_request->isPost())
         {
            if($form->isValid($this->_request->getParams()))
             {
                $forum_info = $form->getValues();
                $forum_model = new Application_Model_Forums();
+               if($forum_info["image"] !="")
+               {
+                    $forum_model = new Application_Model_Forums();
+                    $forum = $forum_model->getForumById($id);
+                  
+                    $imgName= $forum[0]['image'];
+                    unlink("/var/www/html/zend_project/public/forum_images/$imgName");
+                    $ext = pathinfo($forum_info["image"], PATHINFO_EXTENSION);
+                    $upload = new Zend_File_Transfer_Adapter_Http();  
+                    $upload->setDestination("/var/www/html/zend_project/public/forum_images");
+                    $upload->addFilter(new Zend_Filter_File_Rename(array('target' => $forum_info["name"].$forum[0]["cat_id"].'.'.$ext)));                  
+                    $upload->receive();
+                    $forum_info["image"]=$forum_info["name"].$forum[0]["cat_id"].'.'.$ext;
+               }
                $forum_model->editForum ($forum_info);                       
            }
         }
         if (!empty($id)) 
         {
-            $forum_model = new Application_Model_Post();
-            $forum = $forum_model->getPostById($id);
-           //var_dump($forum);
+            $forum_model = new Application_Model_Forums();
+            $forum = $forum_model->getForumById($id);
             $form->populate($forum[0]);
         } 
         else 
         {
-            $this->redirect("forum/list");
+            $this->redirect("forums/list");
         }  
         
-        $form->getElement("name")->setRequired(false);
-        $form->getElement("is_locked")->setRequired(false);
-        
-        $this->view->form = $form;
+    
 	$this->render('add');
     }
 
     public function listAction()
     {
         $forum_model = new Application_Model_Forums();
-        $this->view->forums = $forum_model->listForum();
+        $id=2;
+        $this->view->forums = $forum_model->getForumsByCategoryId($id);
+    }
+    
+    public function lockAction()
+    {
+        $forum_model = new Application_Model_Forums();
+        $id = $this->_request->getParam("id");
+        $lock = $this->_request->getParam("lock");
+        $this->view->forums = $forum_model->lockForum($id,$lock);
+        $this->redirect("forums/list");
     }
 
 

@@ -82,6 +82,9 @@
           <viewControllerScriptsDirectory forControllerName="forums">
             <viewScriptFile forActionName="list"/>
           </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="threads">
+            <viewScriptFile forActionName="list"/>
+          </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>
         <viewFiltersDirectory enabled="false"/>

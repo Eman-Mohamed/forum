@@ -9,13 +9,14 @@ class Application_Form_Forum extends Zend_Form
         $this->setMethod("post");
         $this->setAttrib("class","form-inline");
         
-        $title = new Zend_Form_Element_Text("name");
+        $name = new Zend_Form_Element_Text("name");
         
-        $title->setAttrib("class", "form-control");
-        $title->setLabel("Title  ");
-        $title->setRequired();
-        $title->addValidator(new Zend_Validate_Alnum(TRUE));
-        $title->addFilter(new Zend_Filter_StripTags);     
+        $name->setAttrib("class", "form-control");
+        $name->setLabel("Title  ");
+        $name->setRequired();
+        $name->setAttrib("placeholder", "Forum Title");
+        $name->addValidator(new Zend_Validate_Alnum(TRUE));
+        $name->addFilter(new Zend_Filter_StripTags);     
         
        
          $image = new Zend_Form_Element_File("image");
@@ -24,13 +25,14 @@ class Application_Form_Forum extends Zend_Form
          $image->setValueDisabled(true);
          $image->addValidator('Count', false, 1);
          $image->setLabel("Choose Image");
+         $image->setRequired();
        
-         $lock=new Zend_Form_Element_Radio("is_locked");
-         $lock->setLabel("Forum Status ");
-         $lock->setAttrib("name", "is_locked");
-         $lock->setRequired();
-         $lock->setMultiOptions(array('0' => 'Lock',
-        '1' => 'Not Lock'));
+         $is_locked=new Zend_Form_Element_Radio("is_locked");
+         $is_locked->setLabel("Forum Status ");
+         $is_locked->setAttrib("name", "is_locked");
+         $is_locked->setRequired();
+         $is_locked->setMultiOptions(array('0' => 'Not Lock',
+        '1' => 'Lock'));
          
          $cats=new Application_Model_Categories();
          $allCat=$cats->listCategory();
@@ -40,18 +42,18 @@ class Application_Form_Forum extends Zend_Form
              $names[$value['id']] =  $value["name"];
          }
                
-         $cat=new Zend_Form_Element_Select("cat_id");
-         $cat->setAttrib("name", "cat_id");
-         $cat->setLabel('Choose Category ');
-         $cat->setAttrib("class", "form-control");
-         $cat->setMultiOptions($names);
+         $cat_id=new Zend_Form_Element_Select("cat_id");
+         $cat_id->setAttrib("name", "cat_id");
+         $cat_id->setLabel('Category ');
+         $cat_id->setAttrib("class", "form-control");
+         $cat_id->setMultiOptions($names);
                          
         $id = new Zend_Form_Element_Hidden("id");
         
         $submit = new Zend_Form_Element_Submit("submit");
         $submit->setAttrib("class", "btn btn-primary");
         
-        $this->addElements(array($id,$title,$image,$cat,$lock,$submit));
+        $this->addElements(array($id,$name,$image,$cat_id,$is_locked,$submit));
     }
 
 
