@@ -60,12 +60,13 @@ class ForumsController extends Zend_Controller_Action
         $id = $this->_request->getParam("id");
         if(!empty($id)){
             $img = $this->_request->getParam("img");
+            $catId = $this->_request->getParam("catgId");
             unlink("/var/www/html/zend_project/public/forum_images/$img");
             $forum_model = new Application_Model_Forums();
             $forum_model->deleteForum($id);
         }
        
-          $this->redirect("forums/list");
+          $this->redirect("forums/list/id/$catId");
       
     }
 
@@ -98,7 +99,9 @@ class ForumsController extends Zend_Controller_Action
                     $upload->receive();
                     $forum_info["image"]=$forum_info["name"].$forum[0]["cat_id"].'.'.$ext;
                }
-               $forum_model->editForum ($forum_info);                       
+               $forum_model->editForum ($forum_info); 
+                $catId = $this->_request->getParam("catgId");
+            $this->redirect("forums/list/id/$catId");
            }
         }
         if (!empty($id)) 
@@ -109,7 +112,8 @@ class ForumsController extends Zend_Controller_Action
         } 
         else 
         {
-            $this->redirect("forums/list");
+            $catId = $this->_request->getParam("catgId");
+            $this->redirect("forums/list/id/$catId");
         }  
         
     
@@ -119,7 +123,7 @@ class ForumsController extends Zend_Controller_Action
     public function listAction()
     {
         $forum_model = new Application_Model_Forums();
-        $id=2;
+        $id = $this->_request->getParam("id");
         $this->view->forums = $forum_model->getForumsByCategoryId($id);
     }
     
@@ -128,8 +132,9 @@ class ForumsController extends Zend_Controller_Action
         $forum_model = new Application_Model_Forums();
         $id = $this->_request->getParam("id");
         $lock = $this->_request->getParam("lock");
+        $catId = $this->_request->getParam("catgId");
         $this->view->forums = $forum_model->lockForum($id,$lock);
-        $this->redirect("forums/list");
+         $this->redirect("forums/list/id/$catId");
     }
 
 

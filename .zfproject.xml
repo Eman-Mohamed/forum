@@ -34,6 +34,7 @@
         <formFile formName="Login"/>
         <formFile formName="Registration"/>
         <formFile formName="Forum"/>
+        <formFile formName="Category"/>
       </formsDirectory>
       <layoutsDirectory>
         <layoutScriptsDirectory>
@@ -83,6 +84,15 @@
             <viewScriptFile forActionName="list"/>
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="threads">
+            <viewScriptFile forActionName="list"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="categories">
+            <viewScriptFile forActionName="add"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="categories">
+            <viewScriptFile forActionName="main"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="categories">
             <viewScriptFile forActionName="list"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>

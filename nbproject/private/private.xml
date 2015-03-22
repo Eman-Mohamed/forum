@@ -5,7 +5,11 @@
         <group>
             <file>file:/var/www/html/zend_project/application/controllers/ForumsController.php</file>
             <file>file:/var/www/html/zend_project/application/models/Forums.php</file>
+            <file>file:/var/www/html/zend_project/application/views/scripts/threads/list.phtml</file>
+            <file>file:/var/www/html/zend_project/application/views/scripts/forums/list.phtml</file>
+            <file>file:/var/www/html/zend_project/application/controllers/ThreadsController.php</file>
             <file>file:/var/www/html/zend_project/application/forms/Forum.php</file>
+            <file>file:/var/www/html/zend_project/application/models/Threads.php</file>
         </group>
     </open-files>
 </project-private>

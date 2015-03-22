@@ -33,6 +33,34 @@ class Application_Model_Threads extends Zend_Db_Table_Abstract
         $threads = $this->select()->where("forum_id = $forum_id")->order("date DESC");
         return $this->fetchAll($threads)->toArray();
     }
+    
+     function lockthread($id,$lock){
+      
+        if($lock==0)
+        {
+            $locked = array(
+           'is_locked'      => '1');  
+        }
+        
+        if($lock==1)
+        {
+            $locked = array(
+           'is_locked'      => '0');  
+        }
+        return $this->update($locked, "id=".$id);
+      
+    }
+    
+    function stickthread($id){    
+        
+        $stiky = array('is_sticky'      => '0');  
+        
+        $this->update($stiky);
+         
+        $stiky = array('is_sticky'      => '1'); 
+             
+         return $this->update($stiky, "id=".$id);
+    }
 
 
 }
