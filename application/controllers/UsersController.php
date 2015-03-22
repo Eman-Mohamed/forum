@@ -35,11 +35,15 @@ class UsersController extends Zend_Controller_Action {
 
     public function editAction() {
         $form = new Application_Form_Registration();
-        $this->view->form = $form;
-        $id = $this->_request->getParam("id"); 
+        
+        $id = $this->_request->getParam("id");
+       
         $form->getElement("password")->setRequired(false);
+        $form->getElement("image")->setRequired(false);
+        $form->getElement("signature")->setRequired(false);
         $form->removeElement("gender");
         $form->removeElement("email");
+        $this->view->form = $form;
 
         if ($this->_request->isPost()) {
             
@@ -53,13 +57,13 @@ class UsersController extends Zend_Controller_Action {
                     $users = $user_model->getUserById($id);
                   
                     $imgName= $users[0]['image'];
-                    unlink("/var/www/html/zend_project/public/profile_images/$imgName");
+                    unlink("/var/www/html/zend_forum/public/profile_images/$imgName");
                     $ext = pathinfo($user_info["image"], PATHINFO_EXTENSION);
                     $upload = new Zend_File_Transfer_Adapter_Http();  
-                    $upload->setDestination("/var/www/html/zend_project/public/profile_images");
+                    $upload->setDestination("/var/www/html/zend_forum/public/profile_images");
                     $upload->addFilter(new Zend_Filter_File_Rename(array('target' => $user_info["name"].$users[0]["id"].'.'.$ext)));                  
                     $upload->receive();
-                    $user_info["image"]=$user_info["name"].$user[0]["id"].'.'.$ext;
+                    $user_info["image"]=$user_info["name"].$users[0]["id"].'.'.$ext;
                }
                
                if($user_info["signature"] !="")
@@ -68,24 +72,28 @@ class UsersController extends Zend_Controller_Action {
                     $users = $user_model->getUserById($id);
                   
                     $signatureName= $users[0][' signature'];
-                    unlink("/var/www/html/zend_project/public/profile_images/$signatureName");
+                    unlink("/var/www/html/zend_forum/public/profile_images/$signatureName");
                     $ext = pathinfo($user_info["image"], PATHINFO_EXTENSION);
                     $upload = new Zend_File_Transfer_Adapter_Http();  
-                    $upload->setDestination("/var/www/html/zend_project/public/signature_images");
-                    $upload->addFilter(new Zend_Filter_File_Rename(array('target' => $user_info["name"].$users[0]["id"].'.'.$ext)));                  
+                    $upload->setDestination("/var/www/html/zend_forum/public/signture_images");
+                    $upload->addFilter(new Zend_Filter_File_Rename(array('target' => $user_info["signature"].'.'.$ext)));                  
                     $upload->receive();
-                    $user_info["signature"]=$user_info["name"].$user[0]["id"].'.'.$ext;
+                    $user_info["signature"]=$user_info["signature"].'.'.$ext;
                }
+             
                 $user_model->editUser($user_info);
+                $this->redirect("users/list");
             }
+        }
             if (!empty($id)) {
                 $user_model = new Application_Model_Users();
                 $user = $user_model->getUserById($id);
-
+               
                 $form->populate($user[0]);
             } else
+            {
                 $this->redirect("users/list");
-        }
+            }
         
         $this->render('add');
     }
@@ -160,7 +168,7 @@ class UsersController extends Zend_Controller_Action {
                            
                $data = $form->getValues();
                 echo "hello";
-                var_dump($data);
+                
                 $data=$this->preparedata($data);
 
                 if ($register_model->checkUnique($data['email'])) {
@@ -170,13 +178,10 @@ class UsersController extends Zend_Controller_Action {
 
                 $register_model->insert($data);
                 $accept=$this->sendConfirmationEmail($data);
-                if($accept)
-                {
+               
                  $this->_redirect('users/login');        
-            }
-            else{
-                echo "it is not real email please verify it";
-            }
+            
+            
         }
     }
     }

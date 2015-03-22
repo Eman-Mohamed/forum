@@ -27,12 +27,18 @@ class Application_Model_Users extends Zend_Db_Table_Abstract
     }
             
     function editUser($data){
+        
         if (empty($data['image'])) {
            unset($data['image']);
         }
-        if (empty($data['signture'])) {
-           unset($data['signture']);
+        if (empty($data['signature'])) {
+           unset($data['signature']);
         }
+        
+        if (empty($data['password'])) {
+           unset($data['password']);
+        }         
+        $data['password'] = md5($data['password']);         
         $this->update($data, "id=".$data['id']);
         return $this->fetchAll()->toArray();
     }

@@ -75,7 +75,8 @@ class Application_Form_Registration extends Zend_Form
                         $gender,
                         $image,
                         $signature,
-                        $register
+                        $register,
+                        $id
         ));
       
     }
