@@ -39,7 +39,7 @@ class Application_Model_Forums extends Zend_Db_Table_Abstract
     }
     
     function lockForum($id,$lock){
-        echo "gfdgd".$lock;
+      
         if($lock==0)
         {
             $locked = array(

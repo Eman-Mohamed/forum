@@ -35,6 +35,7 @@ class UsersController extends Zend_Controller_Action {
 
     public function editAction() {
         $form = new Application_Form_Registration();
+        $this->view->form = $form;
         $id = $this->_request->getParam("id"); 
         $form->getElement("password")->setRequired(false);
         $form->removeElement("gender");
@@ -53,7 +54,7 @@ class UsersController extends Zend_Controller_Action {
                   
                     $imgName= $users[0]['image'];
                     unlink("/var/www/html/zend_project/public/profile_images/$imgName");
-                    $ext = pathinfo($forum_info["image"], PATHINFO_EXTENSION);
+                    $ext = pathinfo($user_info["image"], PATHINFO_EXTENSION);
                     $upload = new Zend_File_Transfer_Adapter_Http();  
                     $upload->setDestination("/var/www/html/zend_project/public/profile_images");
                     $upload->addFilter(new Zend_Filter_File_Rename(array('target' => $user_info["name"].$users[0]["id"].'.'.$ext)));                  
@@ -68,7 +69,7 @@ class UsersController extends Zend_Controller_Action {
                   
                     $signatureName= $users[0][' signature'];
                     unlink("/var/www/html/zend_project/public/profile_images/$signatureName");
-                    $ext = pathinfo($forum_info["image"], PATHINFO_EXTENSION);
+                    $ext = pathinfo($user_info["image"], PATHINFO_EXTENSION);
                     $upload = new Zend_File_Transfer_Adapter_Http();  
                     $upload->setDestination("/var/www/html/zend_project/public/signature_images");
                     $upload->addFilter(new Zend_Filter_File_Rename(array('target' => $user_info["name"].$users[0]["id"].'.'.$ext)));                  
@@ -85,7 +86,7 @@ class UsersController extends Zend_Controller_Action {
             } else
                 $this->redirect("users/list");
         }
-        $this->view->form = $form;
+        
         $this->render('add');
     }
 
@@ -144,7 +145,7 @@ class UsersController extends Zend_Controller_Action {
         $form = new Application_Form_Users();
         $users_model = new Application_Model_Users();
         $id = $this->_request->getParam("id");
-        $ban = $this->_request->getParam("lock");
+        $ban = $this->_request->getParam("ban");
         $this->view->users = $users_model->banuser($id,$ban);
         $this->redirect("users/list");
     }
@@ -152,13 +153,15 @@ class UsersController extends Zend_Controller_Action {
     public function registerAction() {
         $register_model = new Application_Model_Users();
         $form = new Application_Form_Registration();
-        $this->view->register = $form;
+        $this->view->register =$form;
         
         if ($this->getRequest()->isPost()) {
             if ($form->isValid($_POST)) {
-                $data = $form->getValues();
+                           
+               $data = $form->getValues();
                 echo "hello";
-                $data = $this->preparedata($data);
+                var_dump($data);
+                $data=$this->preparedata($data);
 
                 if ($register_model->checkUnique($data['email'])) {
                     $this->view->errorMessage = "Name already taken. Please choose      another one.";
@@ -166,11 +169,18 @@ class UsersController extends Zend_Controller_Action {
                 }
 
                 $register_model->insert($data);
-                $this->_redirect('users/login');
-                $this->sendConfirmationEmail($data);
+                $accept=$this->sendConfirmationEmail($data);
+                if($accept)
+                {
+                 $this->_redirect('users/login');        
+            }
+            else{
+                echo "it is not real email please verify it";
             }
         }
     }
+    }
+
 
     public function sendConfirmationEmail($data) {
 
@@ -207,11 +217,6 @@ class UsersController extends Zend_Controller_Action {
             'controller' => 'users',
             'action' => 'confirm-email'
         ));
-    
-        
-       
-
-        /* PLEASE REPLACE THE above 'ROUTE_NAME' WITH THE ONE YOU MUST HAVE USED FOR 'registration' CONTROLLER */
 
         $full_url = $prefix . "://" . $server_name . $url;
 
@@ -225,8 +230,10 @@ class UsersController extends Zend_Controller_Action {
         try {
             $mail->send($transport);
             echo "Message sent!<br />\n";
+            return true;
         } catch (Exception $ex) {
             echo "Failed to send mail! " . $ex->getMessage() . "<br />\n";
+            return false;
         }
     }
     

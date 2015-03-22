@@ -2,10 +2,7 @@
 
 class Application_Form_Registration extends Zend_Form
 {
-
-    public function init()
-            
-            
+    public function init()         
     {
         $id = $this->createElement('hidden','id');
         $name = $this->createElement('text','name');
@@ -13,28 +10,28 @@ class Application_Form_Registration extends Zend_Form
                     ->setRequired(true)
                     ->addFilter('StripTags')
                     ->addFilter('StripTags');
-        $name->setAttrib("class", "form-control");
-       $name->setAttrib("placeholder", "Name");
+//        $name->setAttrib("class", "form-control");
+//       $name->setAttrib("placeholder", "Name");
         
         $email = $this->createElement('text','email');
         $email->setLabel('Email: *')
                 ->setRequired(true);
-        $email->setAttrib("class", "form-control");
-       $email->setAttrib("placeholder", "Email");
+//        $email->setAttrib("class", "form-control");
+//       $email->setAttrib("placeholder", "Email");
                 
         
                 
         $password = $this->createElement('password','password');
         $password->setLabel('Password: *')
                 ->setRequired(true);
-        $password->setAttrib("class", "form-control");
-        $password->setAttrib("placeholder", "Password");
+//        $password->setAttrib("class", "form-control");
+//        $password->setAttrib("placeholder", "Password");
         
         $gender =new Zend_Form_Element_Radio("gender");
         $gender->addFilter(new Zend_Filter_StringTrim())
         ->setMultiOptions(array('M'=>'Male', 'F'=>'Female'))
         ->setAttrib("name", "gender")
-        ->setRequired()
+        ->setRequired(true)
         ->setDecorators(array( array('ViewHelper') ));
        
        
@@ -42,7 +39,7 @@ class Application_Form_Registration extends Zend_Form
         $image = new Zend_File_Transfer_Adapter_Http();
         $image = new Zend_Form_Element_File('image');
         $image->setLabel("Upload Image ")
-            ->setRequired()               
+            ->setRequired(true)               
             ->addValidator('Extension',false,'jpg,png,gif,jpeg')
             ->setDestination("../public/profile_images")
             ->addValidator('Count',false,1) //ensure only 1 file
@@ -54,7 +51,7 @@ class Application_Form_Registration extends Zend_Form
         
         $signature = new Zend_Form_Element_File('signature');
         $signature->setLabel("Upload signature ")
-            ->setRequired()               
+            ->setRequired(true)               
             ->addValidator('Extension', false, 'jpeg,png,gif,jpg')
             ->setDestination("../public/signture_images")
             ->addValidator('Count',false,1) //ensure only 1 file
@@ -82,7 +79,12 @@ class Application_Form_Registration extends Zend_Form
         ));
       
     }
+    
+   
+
+    
 }
+
 
 
 

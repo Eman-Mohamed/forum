@@ -2,7 +2,7 @@
 <div id="view-content">
 	<p>View script for controller <b>threads</b> and script/action name <b>list</b></p>
 </div>
-
+<div class="container-fluid">
 <table class="table table-hover">
        <?php
        $sticky=-1;
@@ -30,7 +30,12 @@
 </td>
 
         <td class="active" width='150px' >    
-<a href="<?php echo $this->baseUrl()?>/threads/lock/id/<?php echo $this->threads[$i]['id'];?>/lock/<?php echo $this->threads[$i]['is_locked'];?>" class="btn btn-warning btn-lg" > <?php if( $this->threads[$i]['is_locked'] == 0) echo "Lock"; else{ echo "Unlock";}?> </a>
+<a href="<?php echo $this->baseUrl()?>/threads/lock/id/<?php echo $this->threads[$i]['id'];?>/lock/<?php echo $this->threads[$i]['is_locked'];?>/formId/<?php echo $this->threads[$i]['forum_id']?>" class="btn btn-warning btn-lg" > <?php if( $this->threads[$i]['is_locked'] == 0) echo "Lock"; else{ echo "Unlock";}?> </a>
+
+</td>
+
+       <td class="active" width='150px' >    
+<a href="<?php echo $this->baseUrl()?>/threads/sticky/id/<?php echo $this->threads[$i]['id'];?> /formId/<?php echo $this->threads[$i]['forum_id']?>" class="btn btn-warning btn-lg" > <?php if( $this->threads[$i]['is_sticky'] == 0) echo "Not Sticky"; else{ echo "Sticky";}?> </a>
 
 </td>
     </tr>
@@ -65,7 +70,12 @@ for($i = 0; $i<count($this->threads); $i++){
 </td>
 
         <td class="active" width='150px' >    
-<a href="<?php echo $this->baseUrl()?>/threads/lock/id/<?php echo $this->threads[$i]['id'];?>/lock/<?php echo $this->threads[$i]['is_locked']?>" class="btn btn-warning btn-lg" > <?php if( $this->threads[$i]['is_locked'] == 0) echo "Lock"; else{ echo "Unlock";}?> </a>
+<a href="<?php echo $this->baseUrl()?>/threads/lock/id/<?php echo $this->threads[$i]['id'];?>/lock/<?php echo $this->threads[$i]['is_locked']?>/formId/<?php echo $this->threads[$i]['forum_id']?>" class="btn btn-warning btn-lg" > <?php if( $this->threads[$i]['is_locked'] == 0) echo "Lock"; else{ echo "Unlock";}?> </a>
+
+</td>
+
+       <td class="active" width='150px' >    
+<a href="<?php echo $this->baseUrl()?>/threads/sticky/id/<?php echo $this->threads[$i]['id'];?> /formId/<?php echo $this->threads[$i]['forum_id']?>" class="btn btn-warning btn-lg" > <?php if( $this->threads[$i]['is_sticky'] == 0) echo "Not Sticky"; else{ echo "Sticky";}?> </a>
 
 </td>
     </tr>
@@ -74,3 +84,4 @@ for($i = 0; $i<count($this->threads); $i++){
 }}
 ?>
 </table>
+</div>

@@ -7,6 +7,7 @@ class Application_Model_Categories extends Zend_Db_Table_Abstract
     function addCategory($data){
         $row = $this->createRow();
         $row->name = $data['name'];
+        $row->image = $data['image'];
         return $row->save();
     }
     
@@ -20,8 +21,8 @@ class Application_Model_Categories extends Zend_Db_Table_Abstract
     }
             
     function editCategory($data){
-         if (empty($data['name'])) {
-           unset($data['name']);
+         if (empty($data['image'])) {
+           unset($data['image']);
         }
 
         $this->update($data, "id=".$data['id']);

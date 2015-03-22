@@ -3,6 +3,7 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
             <file>file:/var/www/html/zend_forum/application/controllers/UsersController.php</file>
             <file>file:/var/www/html/zend_forum/application/views/scripts/forums/list.phtml</file>
             <file>file:/var/www/html/zend_forum/application/views/scripts/users/register.phtml</file>
@@ -12,6 +13,15 @@
             <file>file:/var/www/html/zend_forum/application/forms/Registration.php</file>
             <file>file:/var/www/html/zend_forum/application/views/scripts/users/list.phtml</file>
             <file>file:/var/www/html/zend_forum/application/views/scripts/users/add.phtml</file>
+=======
+            <file>file:/var/www/html/zend_project/application/controllers/ForumsController.php</file>
+            <file>file:/var/www/html/zend_project/application/models/Forums.php</file>
+            <file>file:/var/www/html/zend_project/application/views/scripts/threads/list.phtml</file>
+            <file>file:/var/www/html/zend_project/application/views/scripts/forums/list.phtml</file>
+            <file>file:/var/www/html/zend_project/application/controllers/ThreadsController.php</file>
+            <file>file:/var/www/html/zend_project/application/forms/Forum.php</file>
+            <file>file:/var/www/html/zend_project/application/models/Threads.php</file>
+>>>>>>> e2df7a1474c471f5e419ef1d07be3157fa6fc647
         </group>
     </open-files>
 </project-private>
